@@ -1,2 +1,11 @@
-alias minikube-start='minikube start --memory 8000 --cpus 6 --disk-size 50g --keep-context'
+alias minikube-start='minikube start; ~/dev/core/vault/k8s/minkube-ecr-login.sh;'
+alias pb='plz build;' 
+alias pbe='plz build //enterprise_platform/...;'
+alias pbv='plz build //vault/...;'
+alias pt='plz test;' 
+alias pte='plz test //enterprise_platform/...;'
+alias ptv='plz test //vault/...;'
+alias pw='plz watch;'
+alias pbep='plz build //enterprise_platform/proto/...;'
+alias aws-login='$(aws ecr get-login)'
 

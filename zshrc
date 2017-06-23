@@ -45,13 +45,13 @@ ZSH_THEME="gallifrey_custom"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+ZSH_CUSTOM=~/dev/dotfiles/oh-my-zsh-custom
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(tmux git aws docker kubectl pip python sublime)
+plugins=(emacs tmux git aws docker kubectl pip python)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -96,3 +96,9 @@ setopt interactivecomments
 
 # Zsh has a spelling corrector
 setopt CORRECT
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/christian/.vimpkg/bin
+
+# plz completion
+source <(plz query completions --bash_script)
+
