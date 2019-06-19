@@ -1,11 +1,12 @@
 alias minikube-start='minikube start; ~/dev/core/vault/k8s/minkube-ecr-login.sh;'
-alias pb='plz build;' 
+alias pb='plz build'
 alias pbe='plz build //enterprise_platform/...;'
 alias pbv='plz build //vault/...;'
-alias pt='plz test;' 
+alias pt='plz test' 
 alias pte='plz test //enterprise_platform/...;'
 alias ptv='plz test //vault/...;'
-alias pw='plz watch;'
+alias pw='plz watch'
 alias pbep='plz build //enterprise_platform/proto/...;'
 alias aws-login='$(aws ecr get-login)'
-
+alias k=kubectl
+alias kcontext='kubectl config use-context'

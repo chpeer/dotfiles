@@ -51,7 +51,7 @@ ZSH_CUSTOM=~/dev/dotfiles/oh-my-zsh-custom
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(emacs tmux git aws docker kubectl pip python)
+plugins=(emacs tmux git aws docker pip python kubectl please)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -97,8 +97,10 @@ setopt interactivecomments
 # Zsh has a spelling corrector
 setopt CORRECT
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/christian/.vimpkg/bin
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/christian/.vimpkg/bin:/home/christian/dev/go/bin
 
-# plz completion
-source <(plz query completions --bash_script)
+export KUBECONFIG=/home/christian/.kube/config
+for file in /home/christian/.kube/configs/*.yaml; do
+  export KUBECONFIG=$KUBECONFIG:$file
+done
 
