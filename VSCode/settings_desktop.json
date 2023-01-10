@@ -1,0 +1,85 @@
+{
+  "git.checkoutType": [
+    "local"
+  ],
+  "go.toolsGopath": "/home/christian/dev/go",
+  "go.useLanguageServer": true,
+  "gopls": {
+    "directoryFilters": [
+      "-plz-out"
+    ],
+    "ui.completion.usePlaceholders": true,
+  },
+  "files.watcherExclude": {
+    "plz-out/**": true,
+    "**/third_party/**": true,
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "plz-out/**": true,
+    "**/plz-gen": true,
+  },
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "java.configuration.checkProjectSettingsExclusions": false,
+  "editor.multiCursorModifier": "alt",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.associations": {
+    "BUILD": "plz"
+  },
+  "explorer.confirmDragAndDrop": false,
+  "explorer.autoReveal": "focusNoScroll",
+  "python.formatting.provider": "yapf",
+  "rewrap.wrappingColumn": 100,
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "BUILD",
+        "isAsync": false,
+        "cmd": "buildifier ${file} --mode=fix"
+      }
+    ]
+  },
+  "gitlens.views.repositories.location": "gitlens",
+  "gitlens.views.fileHistory.location": "gitlens",
+  "gitlens.views.lineHistory.location": "gitlens",
+  "gitlens.views.compare.location": "gitlens",
+  "gitlens.views.search.location": "gitlens",
+  "files.autoSave": "afterDelay",
+  "python.languageServer": "Pylance",
+  "remote.autoForwardPortsSource": "output",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  //  "vs-wollemi.shell": "bash",
+  //  "vs-wollemi.wollemiCommand": "plz run --in_wd //third_party/binary:wollemi --",
+  "sourcegraph.url": "https://sourcegraph.iap.tmachine.io",
+  "sourcegraph.remoteUrlReplacements": {
+    "CORE/core3": "CORE"
+  },
+  "terminal.integrated.profiles.linux": {
+    "tmux-vscode": {
+      "path": "/usr/bin/tmux",
+      "args": [
+        "new-session",
+        "-A",
+        "-s",
+        "vscode"
+      ],
+    },
+  },
+  "terminal.integrated.defaultProfile.linux": "tmux-vscode",
+  "vs-wollemi.wollemiCommand": "plz update-go-targets",
+  "editor.rulers": [
+    100,
+    120
+  ],
+  "workbench.editor.enablePreview": false
+}
