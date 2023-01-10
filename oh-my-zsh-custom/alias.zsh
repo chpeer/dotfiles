@@ -10,3 +10,4 @@ alias pbep='plz build //enterprise_platform/proto/...;'
 alias aws-login='$(aws ecr get-login)'
 alias k=kubectl
 alias kcontext='kubectl config use-context'
+alias vim=nvim
