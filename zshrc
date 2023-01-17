@@ -45,13 +45,13 @@ ZSH_THEME="gallifrey"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM="dev/dotfiles/oh-my-zsh-custom"
+ZSH_CUSTOM="/home/christian/dev/dotfiles/oh-my-zsh-custom"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(emacs tmux git docker python kubectl please timer microk8s mettle)
+plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle)
 
 ZSH_TMUX_AUTOSTART=true
 
@@ -67,11 +67,11 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
+#if [[ -n $SSH_CONNECTION ]]; then
+#  export EDITOR='vim'
+#else
+#  export EDITOR='mvim'
+#fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -113,7 +113,7 @@ compinit
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-bindkey -e
+bindkey -v
 # End of lines configured by zsh-newuser-install
 
 # config for timing execution time
@@ -121,11 +121,5 @@ TIMER_PRECISION=1
 TIMER_FORMAT='[%d]'
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/christian/.vimpkg/bin:/home/christian/dev/go/bin:/home/christian/.local/bin
-
-export KUBECONFIG=/home/christian/.kube/config
-for file in /home/christian/.kube/configs/*.yaml; do
-  export KUBECONFIG=$KUBECONFIG:$file
-done
-
 
 source ~/.profile_tm
