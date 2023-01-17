@@ -58,12 +58,6 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  //  "vs-wollemi.shell": "bash",
-  //  "vs-wollemi.wollemiCommand": "plz run --in_wd //third_party/binary:wollemi --",
-  "sourcegraph.url": "https://sourcegraph.iap.tmachine.io",
-  "sourcegraph.remoteUrlReplacements": {
-    "CORE/core3": "CORE"
-  },
   "terminal.integrated.profiles.linux": {
     "tmux-vscode": {
       "path": "/usr/bin/tmux",
