@@ -51,12 +51,13 @@ ZSH_CUSTOM="/home/christian/dev/dotfiles/oh-my-zsh-custom"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle)
+plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle zsh-autosuggestions)
 
 ZSH_TMUX_AUTOSTART=true
 
 alias vi=nvim
 alias vim=nvim
+export EDITOR='nvim'
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -89,7 +90,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # want your terminal to support 256 color schemes? I do ...
-export TERM="xterm-256color"
+#export TERM="xterm-256color"
 
 # if you do a 'rm *', Zsh will give you a sanity check!
 setopt RM_STAR_WAIT
