@@ -1,0 +1,8 @@
+{
+  "hosts": {
+    "https://phabricator.gaia.tmachine.io/api/": {
+      "token": "cli-b7pfdw3e7ekur53rbfrwougsv2rj"
+    }
+  },
+  "base": "arc:upstream"
+}
