@@ -124,3 +124,6 @@ TIMER_FORMAT='[%d]'
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/snap/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/christian/.vimpkg/bin:/home/christian/dev/go/bin:/home/christian/.local/bin
 
 source ~/.profile_tm
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

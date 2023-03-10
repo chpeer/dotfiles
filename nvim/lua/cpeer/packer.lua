@@ -20,7 +20,7 @@ return require('packer').startup(function(use)
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
 
-  use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use('theprimeagen/harpoon')
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
@@ -58,5 +58,19 @@ return require('packer').startup(function(use)
 		  {'rafamadriz/friendly-snippets'}, -- Optional
 	  }
   }
-
+  use('mfussenegger/nvim-dap')
+  use('theHamsta/nvim-dap-virtual-text')
+  use { 'rcarriga/nvim-dap-ui',
+    requires = {
+       "mfussenegger/nvim-dap",
+    },
+  }
+  use {
+    'akinsho/git-conflict.nvim', tag = '*',
+  }
+  use('numToStr/Comment.nvim')
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+  }
 end)
