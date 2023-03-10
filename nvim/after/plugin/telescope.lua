@@ -3,6 +3,7 @@ local telescope = require('telescope')
 local builtin = require('telescope.builtin')
 local layout = require('telescope.actions.layout')
 local transform_mod = require('telescope.actions.mt').transform_mod
+local entry_display = require('telescope.pickers.entry_display')
 
 local custom_actions = transform_mod({
   open_first_qf_item = function(_)
@@ -26,6 +27,40 @@ telescope.setup({
         },
     },
   },
+  pickers = {
+    lsp_document_symbols = {
+            entry_maker = function(entry)
+        local displayer = entry_display.create({
+          separator = ' ',
+          items = {
+            { width = 13 }, -- symbol type
+            { remaining = true }, -- symbol name
+          },
+        })
+
+        local make_display = function(entry)
+          return displayer({
+            { entry.symbol_type, 'CmpItemKind' .. entry.symbol_type },
+            entry.symbol_name,
+          })
+        end
+
+        return {
+          valid = true,
+          value = entry,
+          ordinal = entry.text,
+          display = make_display,
+          filename = entry.filename or vim.api.nvim_buf_get_name(entry.bufnr),
+          lnum = entry.lnum,
+          col = entry.col,
+          symbol_name = entry.text:match('%[.+%]%s+(.*)'),
+          symbol_type = entry.kind,
+          start = entry.start,
+          finish = entry.finish,
+        }
+      end,
+    }
+  }
 })
 
 -- search for files <leader>pf
