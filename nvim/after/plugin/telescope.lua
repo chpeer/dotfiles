@@ -63,6 +63,9 @@ telescope.setup({
   }
 })
 
+-- use fuzzy finding
+telescope.load_extension('fzf')
+
 -- search for files <leader>pf
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
 -- only search for git files
@@ -71,4 +74,3 @@ vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 vim.keymap.set('n', '<leader>ps', builtin.live_grep, {})
 -- old files
 vim.keymap.set('n', '<leader>pr', builtin.oldfiles, {})
-

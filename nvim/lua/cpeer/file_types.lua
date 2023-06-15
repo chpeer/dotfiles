@@ -24,6 +24,7 @@ file_types_utils.setup({
 	go = {
 		text_width = 120,
 		indent_with_tabs = true,
+    tab_size = 2,
 		format_on_save = true,
 	},
 	proto = {

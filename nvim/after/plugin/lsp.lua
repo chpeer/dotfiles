@@ -2,6 +2,7 @@
 -- Learn to configure LSP servers, see :help lsp-zero-api-showcase
 local lsp = require('lsp-zero')
 local telescope_builtin = require('telescope.builtin')
+local lspconfig = require('lspconfig')
 lsp.preset('recommended')
 
 -- (Optional) Configure lua language server for neovim
@@ -13,7 +14,7 @@ lsp.ensure_installed({
   'pyright',
 })
 
-require'lspconfig'.lua_ls.setup {
+lspconfig.lua_ls.setup {
   settings = {
     Lua = {
       runtime = {
@@ -35,6 +36,36 @@ require'lspconfig'.lua_ls.setup {
     },
   },
 }
+
+lspconfig.gopls.setup({
+  settings = {
+    gopls = {
+      directoryFilters = { '-plz-out' },
+      linksInHover = false,
+      analyses = {
+        unusedparams = true,
+      },
+      semanticTokens = true,
+      codelenses = {
+        gc_details = true,
+      },
+      staticcheck = true,
+    },
+  },
+ root_dir = function(fname)
+    local go_mod = vim.fs.find('go.mod', { upward = true, path = vim.fs.dirname(fname) })[1]
+    if go_mod then
+      return vim.fs.dirname(go_mod)
+    end
+    local plzconfig = vim.fs.find('.plzconfig', { upward = true, path = vim.fs.dirname(fname) })[1]
+    local src = vim.fs.find('src', { upward = true, path = vim.fs.dirname(fname) })[1]
+    if plzconfig and src then
+      vim.env.GOPATH = string.format('%s:%s/plz-out/go', vim.fs.dirname(src), vim.fs.dirname(plzconfig))
+      vim.env.GO111MODULE = 'off'
+    end
+    return vim.fn.getcwd()
+  end,
+})
 
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
@@ -65,16 +96,24 @@ lsp.set_preferences({
 })
 
 
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol)
 vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_next)
 vim.keymap.set("n", "]d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
-vim.keymap.set("n", "gr", telescope_builtin.lsp_references)
 vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename)
 vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help )
+vim.keymap.set('n', '<leader>ds', telescope_builtin.lsp_document_symbols)
+vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+vim.keymap.set('n', 'gi', telescope_builtin.lsp_implementations)
+vim.keymap.set('n', 'gr', function()
+  telescope_builtin.lsp_references({
+    jump_type = 'never',
+  })
+end)
+vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
+vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action)
 
 lsp.setup()
 
