@@ -14,3 +14,6 @@ vim.o.splitbelow = true
 vim.o.splitright = true
 
 vim.o.termguicolors = true
+
+-- do not show mode in cmd line as it is shown by lualist  plugin
+vim.o.showmode = false

@@ -8,6 +8,7 @@ alias kcontext='kubectl config use-context'
 alias vim=nvim
 alias core3='cd ~/dev/core3/src'
 alias dotfiles='cd ~/dev/dotfiles'
+alias merge='gco master && git pull && gco - && git merge'
 
 # substitute for arc to set parent revision on diff 
 function arc() {
@@ -39,3 +40,17 @@ function deploy() {
     done
     echo $result
 }
+
+# deployed-version returns the commit hash of a deployment. Helps to identify if a change made it into an environment
+# Usage: deployed-version --namespace core-stable accounts
+function deployed-version() {
+  kubectl get deployment "$@" -o jsonpath="{.metadata.labels.app\.kubernetes\.io\/version}"
+}
+
+# earliest-version retuns the first vault version which contains a commit
+# Usage: earliest-version 15381c1f1b39
+function earliest-version() {
+  git tag --contains $1 | rg '^vault-\d\.\d+\.\d+$' | sort -n | head -1
+}
+
+

@@ -42,7 +42,7 @@ lualine.setup({
       winbar = {},
       quickfix = {},
     },
-    globalstatus = true,
+    globalstatus = false ,
   },
   sections = {
     lualine_a = { 'mode' },
@@ -61,11 +61,11 @@ lualine.setup({
         'filename',
         path = 1,
       },
-      cwd,
+--      cwd,
     },
     lualine_x = { search_results },
     lualine_y = {
-      { lsp_clients, component_separators = { right = '' } },
+--      { lsp_clients, component_separators = { right = '' } },
       {
         'diagnostics',
         symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
