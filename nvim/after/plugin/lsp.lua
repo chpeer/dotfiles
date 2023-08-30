@@ -68,6 +68,7 @@ lspconfig.gopls.setup({
 })
 
 local cmp = require('cmp')
+
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
   ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -119,4 +120,14 @@ lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
+})
+
+cmp.setup({
+  sorting = {
+    -- adding this sorting should fix the focus on the auto complition pop up not being at the top
+    comparators = {
+      cmp.config.compare.sort_text,
+      cmp.config.compare.score,
+    },
+  }
 })
