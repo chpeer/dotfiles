@@ -17,3 +17,9 @@ vim.o.termguicolors = true
 
 -- do not show mode in cmd line as it is shown by lualist  plugin
 vim.o.showmode = false
+
+-- use unnamed register for system clipboard
+vim.o.clipboard = 'unnamed'
+
+-- set lsp server log level
+vim.lsp.set_log_level("debug")
