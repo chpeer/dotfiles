@@ -1,6 +1,9 @@
 /emacs.d/auto-save-list/
 /emacs.d/elpa/
 
+nvim/plugin/
+nvim/lua/.luarc.json
+
 oh-my-zsh-custom/example.zsh
 oh-my-zsh-custom/plugins/example/
 
