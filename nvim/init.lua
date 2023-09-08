@@ -1,1 +1,3 @@
-require("cpeer")
+require("config")
+require("remap")
+require("plugin")
