@@ -1,14 +1,14 @@
 local cmp = require('cmp')
 
 return {
-  {'nvim-treesitter/nvim-treesitter', 
-  build = ':TSUpdate',  
+  {'nvim-treesitter/nvim-treesitter',
+  build = ':TSUpdate',
+  event = { "BufReadPost", "BufNewFile" },
+  cmd = { "TSUpdateSync" },
+  ---@type TSConfig
   opts = {
     -- A list of parser names, or "all" (the four listed parsers should always be installed)
-    ensure_installed = { "c", "lua", "vim", "help" },
-
-    -- prevent error message saying parser not available for language help
-    ignore_install = { "help" },
+    ensure_installed = { "c", "lua", "vim"},
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -28,12 +28,25 @@ return {
       additional_vim_regex_highlighting = false,
     },
   },
+  config = function(_, opts)
+    if type(opts.ensure_installed) == "table" then
+      ---@type table<string, boolean>
+      local added = {}
+      opts.ensure_installed = vim.tbl_filter(function(lang)
+        if added[lang] then
+          return false
+        end
+        added[lang] = true
+        return true
+      end, opts.ensure_installed)
+    end
+    require("nvim-treesitter.configs").setup(opts)
+  end,
 },
 {
-
   'ray-x/lsp_signature.nvim',
   opts = {
-    on_attach = function(client, bufnr)
+    on_attach = function(_, bufnr)
       require "lsp_signature".on_attach({
         bind = true, -- This is mandatory, otherwise border config won't get registered.
         handler_opts = {
