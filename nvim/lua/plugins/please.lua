@@ -18,11 +18,12 @@ return {
       vim.keymap.set('n', '<leader>pft', function()
         require('please').test({ failed = true })
       end)
-      vim.keymap.set('n', '<leader>pr', require('please').run)
+      -- commented out as it clashes with telescope old file keyboard assignment. Need to find a better one
+--      vim.keymap.set('n', '<leader>pr', require('please').run)
       vim.keymap.set('n', '<leader>py', require('please').yank)
       vim.keymap.set('n', '<leader>pd', require('please').debug)
       vim.keymap.set('n', '<leader>pa', require('please').action_history)
       vim.keymap.set('n', '<leader>pp', require('please.runners.popup').restore)
-    end, 
+    end,
   },
 }
