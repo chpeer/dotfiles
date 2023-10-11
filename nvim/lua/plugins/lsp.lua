@@ -188,6 +188,9 @@ return {
     "hrsh7th/cmp-nvim-lua",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-buffer",
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
+    "hrsh7th/cmp-cmdline",
   },
   opts = {
     -- the sources to use for autocompletion
@@ -195,6 +198,12 @@ return {
       { name = 'nvim_lsp' },
       { name = 'nvim_lua' },
       { name = 'buffer' },
+      { name = 'luasnip' },
+    },
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      end,
     },
     -- update the default sorting order so results don't magically jump around when the autocompletion window is open
     sorting = {
@@ -206,7 +215,40 @@ return {
     mapping = {
       ['<c-space>'] = cmp.mapping.complete(),
       ['<cr>'] = cmp.mapping.confirm({ select = true }),
-    }
+    },
+    confirmation = {
+      default_behavior = cmp.ConfirmBehavior.Replace,
+    },
+    config = function(_, _)
+      -- `/` cmdline setup.
+      cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+      -- `:` cmdline setup.
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' }
+            }
+          }
+        })
+      })
+    end,
   },
+},
+{
+	"L3MON4D3/LuaSnip",
+	-- follow latest release.
+	version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+	-- install jsregexp (optional!).
+	build = "make install_jsregexp"
 },
 }
