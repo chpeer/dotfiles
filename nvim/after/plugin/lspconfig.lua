@@ -1,12 +1,39 @@
-local lspconfig = require('lspconfig')
-local mason = require('mason')
-local mason_lspconfig = require('mason-lspconfig')
-local cmp_nvim_lsp = require('cmp_nvim_lsp')
+local ok, lspconfig = pcall(require, 'lspconfig')
+if not ok then
+  return
+end
+local ok, mason = pcall(require, 'mason')
+if not ok then
+  return
+end
+local ok, mason_lspconfig = pcall(require,'mason-lspconfig')
+if not ok then
+  return
+end
+local ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+if not ok then
+  return
+end
+local util = require('lspconfig.util')
+local configs = require('lspconfig.configs')
+
 
 mason.setup()
 mason_lspconfig.setup({
   automatic_installation = true,
 })
+
+util.default_config = vim.tbl_deep_extend('force', util.default_config, {
+  capabilities = cmp_nvim_lsp.default_capabilities(),
+})
+
+configs.please = {
+  default_config = {
+    cmd = { 'plz', 'tool', 'lps' },
+    filetypes = { 'please' },
+    root_dir = util.root_pattern('.plzconfig'),
+  },
+}
 
 -- codelense autocmd
 local augroup = vim.api.nvim_create_augroup('lspconfig_config', { clear = true })
@@ -44,18 +71,15 @@ lspconfig.gopls.setup({
     },
   },
   root_dir = function(fname)
-    local go_mod = vim.fs.find('go.mod', { upward = true, path = vim.fs.dirname(fname) })[1]
-    if go_mod then
-      return vim.fs.dirname(go_mod)
+    local gowork_or_gomod_dir = util.root_pattern('go.work')(fname) or util.root_pattern('go.mod')(fname)
+    if gowork_or_gomod_dir then
+      return gowork_or_gomod_dir
     end
 
-    -- Set GOPATH if we're in a directory called 'src' containing a .plzconfig
-    local plzconfig_path = vim.fs.find('.plzconfig', { upward = true, path = vim.fs.dirname(fname) })[1]
-    if plzconfig_path then
-      local plzconfig_dir = vim.fs.dirname(plzconfig_path)
-      if plzconfig_dir and vim.fs.basename(plzconfig_dir) == 'src' then
-        vim.env.GOPATH = string.format('%s:%s/plz-out/go', vim.fs.dirname(plzconfig_dir), plzconfig_dir)
-      end
+    local plzconfig_dir = util.root_pattern('.plzconfig')(fname)
+    if plzconfig_dir and vim.fs.basename(plzconfig_dir) == 'src' then
+      vim.env.GOPATH = string.format('%s:%s/plz-out/go', vim.fs.dirname(plzconfig_dir), plzconfig_dir)
+      vim.env.GO111MODULE = 'off'
     end
 
     return vim.fn.getcwd()
@@ -76,19 +100,47 @@ lspconfig.lua_ls.setup({
         version = 'LuaJIT',
       },
       workspace = {
-	-- Make the server aware of Neovim runtime files
-	library = vim.api.nvim_get_runtime_file("", true),
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
         checkThirdParty = false,
       },
       telemetry = {
         enable = false,
       },
       diagnostics = {
-	-- Get the language server to recognize the 'vim' global
-	globals = {'vim'},
+        -- Get the language server to recognize the 'vim' global
+        globals = {'vim'},
       },
     },
   },
+})
+
+lspconfig.pylsp.setup({
+  settings = {
+    pylsp = {
+      plugins = {
+        autopep8 = { enabled = false },
+        flake8 = { enabled = true },
+        mccabe = { enabled = false },
+        pycodestyle = { enabled = false },
+        pyflakes = { enabled = false },
+        yapf = { enabled = false },
+        jedi_completion = { enabled = true },
+      },
+    },
+  },
+  on_new_config = function(config, root_dir)
+    local plzconfig_dir = util.root_pattern('.plzconfig')(root_dir)
+    if not plzconfig_dir then
+      return
+    end
+    config.settings.pylsp.plugins.jedi = {
+      extra_paths = {
+        plzconfig_dir,
+        vim.fs.joinpath(plzconfig_dir, 'plz-out/gen'),
+      },
+    }
+  end,
 })
 
 vim.lsp.set_log_level(vim.log.levels.OFF)
