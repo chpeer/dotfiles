@@ -15,7 +15,7 @@ return require('packer').startup(function(use)
   })
 
   use {
-	  'nvim-telescope/telescope.nvim', tag = '0.1.1',
+	  'nvim-telescope/telescope.nvim', tag = '0.1.2',
 	  -- or                            , branch = '0.1.x',
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
@@ -32,9 +32,19 @@ return require('packer').startup(function(use)
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
+    "L3MON4D3/LuaSnip",
+    "saadparwaiz1/cmp_luasnip",
+    "hrsh7th/cmp-cmdline",
 		}
   })
-  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  use ({
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    tag = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+    -- install jsregexp (optional!).
+    run = "make install_jsregexp"
+  })
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
   use('theprimeagen/harpoon')
   use('mbbill/undotree')
