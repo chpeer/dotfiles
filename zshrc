@@ -127,3 +127,10 @@ source ~/.profile_tm
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Pyenv 
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+

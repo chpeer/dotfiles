@@ -1,4 +1,8 @@
-local dap = require('dap')
+local ok, dap = pcall(require, 'dap')
+if not ok then
+  return
+end
+
 local entity = require('dap.entity')
 local repl = require('dap.repl')
 local ui = require('dap.ui')
