@@ -1,4 +1,9 @@
-require'nvim-treesitter.configs'.setup {
+local ok, configs = pcall(require, 'nvim-treesitter.configs')
+if not ok then
+  return
+end
+
+configs.setup({
   -- A list of parser names, or "all" (the four listed parsers should always be installed)
   ensure_installed = { "c", "lua", "vim", "help" , "query", "go" },
 
@@ -16,5 +21,7 @@ require'nvim-treesitter.configs'.setup {
     -- `false` will disable the whole extension
     enable = true,
   },
-    indent = { enable = true },
-}
+  indent = { 
+    enable = true 
+  },
+})

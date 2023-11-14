@@ -1,5 +1,9 @@
+local ok, telescope = pcall(require, 'telescope')
+if not ok then
+  return
+end
+
 local actions = require('telescope.actions')
-local telescope = require('telescope')
 local builtin = require('telescope.builtin')
 local layout = require('telescope.actions.layout')
 local transform_mod = require('telescope.actions.mt').transform_mod

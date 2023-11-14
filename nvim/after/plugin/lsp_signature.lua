@@ -1,3 +1,8 @@
+local ok, lsp_signature = pcall(require, 'lsp_signature')
+if not ok then
+  return
+end
+
 local cfg = {
    on_attach = function(client, bufnr)
     require "lsp_signature".on_attach({
@@ -8,5 +13,5 @@ local cfg = {
     }, bufnr)
   end,
 }  -- add your config here
-require "lsp_signature".setup(cfg)
+lsp_signature.setup(cfg)
 
