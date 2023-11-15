@@ -50,7 +50,6 @@ packer.startup({
 		use({ 'mbbill/undotree' })
 		use({ 'tpope/vim-fugitive' })
 		use({ 'christoomey/vim-tmux-navigator'})
-		use({ 'sbdchd/neoformat' })
 		use({ 'windwp/nvim-autopairs' })
 		use({ 'ray-x/lsp_signature.nvim' })
 		use({
