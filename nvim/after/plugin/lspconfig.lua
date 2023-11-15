@@ -2,21 +2,24 @@ local ok, lspconfig = pcall(require, 'lspconfig')
 if not ok then
   return
 end
+
 local ok, mason = pcall(require, 'mason')
 if not ok then
   return
 end
+
 local ok, mason_lspconfig = pcall(require,'mason-lspconfig')
 if not ok then
   return
 end
+
 local ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
 if not ok then
   return
 end
+
 local util = require('lspconfig.util')
 local configs = require('lspconfig.configs')
-
 
 mason.setup()
 mason_lspconfig.setup({
@@ -145,23 +148,8 @@ lspconfig.pylsp.setup({
 
 vim.lsp.set_log_level(vim.log.levels.OFF)
 
-vim.diagnostic.config({
-  float = {
-    source = 'always',
-  },
-  severity_sort = true,
-})
-
-vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticError' })
-vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticWarn' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticInfo' })
-vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticHint' })
-
 vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol)
-vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_next)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_prev)
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename)
 vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help )
