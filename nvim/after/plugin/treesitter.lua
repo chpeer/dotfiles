@@ -3,12 +3,10 @@ if not ok then
   return
 end
 
+---@diagnostic disable-next-line: missing-fields
 configs.setup({
   -- A list of parser names, or "all" (the four listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "help" , "query", "go" },
-
-  -- prevent error message saying parser not available for language help
-  ignore_install = { "help" },
+  ensure_installed = { "c", "lua", "vim", "query", "go", "sql" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -21,7 +19,6 @@ configs.setup({
     -- `false` will disable the whole extension
     enable = true,
   },
-  indent = { 
-    enable = true 
-  },
+
+  indent = { enable = true },
 })
