@@ -1,1 +1,3 @@
-require("cpeer")
+vim.loader.enable()
+
+vim.g.mapleader = ' '
