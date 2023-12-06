@@ -45,13 +45,13 @@ ZSH_THEME="gallifrey"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM="/home/christian/dev/dotfiles/oh-my-zsh-custom"
+ZSH_CUSTOM="/home/christian/.config/oh-my-zsh-custom"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle zsh-autosuggestions)
+plugins=(vi-mode tmux git docker python kubectl please timer mettle zsh-autosuggestions)
 
 ZSH_TMUX_AUTOSTART=true
 
