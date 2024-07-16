@@ -276,8 +276,16 @@ telescope.load_extension('fzf')
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
 -- only search for git files
 vim.keymap.set('n', '<C-p>', builtin.git_files, {})
--- search for string
+-- search for string across files
 vim.keymap.set('n', '<leader>ps', builtin.live_grep, {})
+-- search for string in file with current focus
+vim.keymap.set('n', '<leader>psf', function()
+  builtin.live_grep({search_dirs={vim.fn.expand("%:p")}})
+end)
+-- search for string in a files open in buffer
+vim.keymap.set('n', '<leader>psb', function()
+  builtin.live_grep({grep_open_files=true})
+end)
 -- old files
 vim.keymap.set('n', '<leader>pr', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>ds', builtin.lsp_document_symbols)
