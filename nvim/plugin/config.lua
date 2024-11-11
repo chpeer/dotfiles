@@ -23,3 +23,8 @@ vim.o.clipboard = 'unnamed'
 
 -- set lsp server log level
 vim.lsp.set_log_level("debug")
+
+-- enable spell checking
+vim.o.spelllang= 'en_gb'
+vim.o.spell = true
+
