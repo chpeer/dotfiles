@@ -134,3 +134,4 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+/usr/local/bin/forti-auth-check.sh
