@@ -55,9 +55,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
   group = augroup,
 })
 
+vim.lsp.enable({
+  'pylsp',
+  'gopls',
+  'lua_ls',
+  'please',
+})
+
+
 -- setup Go language server
-lspconfig.gopls.setup({
-  capabilities = cmp_nvim_lsp.default_capabilities(),
+vim.lsp.config.gopls = {
   settings = {
     gopls = {
       directoryFilters = { '-plz-out' },
@@ -71,26 +78,13 @@ lspconfig.gopls.setup({
         gc_details = true,
       },
       staticcheck = true,
-    },
-  },
-  root_dir = function(fname)
-    local plzconfig_dir = util.root_pattern('.plzconfig')(fname)
-    if plzconfig_dir and vim.fs.basename(plzconfig_dir) == 'src' then
-      vim.env.GOPATH = string.format('%s:%s/plz-out/go', vim.fs.dirname(plzconfig_dir), plzconfig_dir)
-    end
+    }
+  }
+}
 
-    local gowork_or_gomod_dir = util.root_pattern('go.work')(fname) or util.root_pattern('go.mod')(fname)
-    if gowork_or_gomod_dir then
-      return gowork_or_gomod_dir
-    end
-
-    return vim.fn.getcwd()
-  end,
-})
 
 -- setup LUA language server
-lspconfig.lua_ls.setup({
-  capabilities = cmp_nvim_lsp.default_capabilities(),
+vim.lsp.config.lua_ls = {
   on_attach = function(_, bufnr)
     -- This gets set automatically by nvim which breaks formatting with gq.
     vim.bo[bufnr].formatexpr = ''
@@ -115,9 +109,9 @@ lspconfig.lua_ls.setup({
       },
     },
   },
-})
+}
 
-lspconfig.pylsp.setup({
+vim.lsp.config.pylsp = {
   settings = {
     pylsp = {
       plugins = {
@@ -143,6 +137,10 @@ lspconfig.pylsp.setup({
       },
     }
   end,
+}
+
+vim.lsp.config('*', {
+  capabilities = cmp_nvim_lsp.default_capabilities(),
 })
 
 vim.lsp.set_log_level(vim.log.levels.OFF)

@@ -82,37 +82,47 @@ packer.startup({
 		use({ 'rcarriga/nvim-dap-ui',
 		requires = {
 			"mfussenegger/nvim-dap",
-		},
-	})
-	use({
-		'akinsho/git-conflict.nvim', tag = '*',
-	})
-	use({ 'numToStr/Comment.nvim' })
-	use({
-		'nvim-lualine/lualine.nvim',
-		requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-	})
-	use({'chentoast/marks.nvim'})
+      },
+    })
+    use({
+      'akinsho/git-conflict.nvim', tag = '*',
+    })
+    use({ 'numToStr/Comment.nvim' })
+    use({
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    })
+    use({'chentoast/marks.nvim'})
+    use({
+      "gbprod/cutlass.nvim",
+      config = function()
+        require("cutlass").setup({
+          -- your configuration comes here
+          -- or leave it empty to use the default settings
+          -- refer to the configuration section below
+        })
+      end
+    })
 
-	if bootstrap then
-		vim.api.nvim_create_autocmd('User', {
-			group = vim.api.nvim_create_augroup('packer', { clear = true }),
-			pattern = 'PackerComplete',
-			desc = 'Load plugins and configuration after installation',
-			callback = function()
-				vim.ui.select(
-				{ 'Yes', 'No' },
-				{ prompt = "Installed plugins won't be configured until nvim is restarted. Exit?" },
-				function(choice)
-					if choice == 'Yes' then
-						vim.cmd.quitall()
-					end
-				end
-				)
-			end,
-			once = true,
-		})
-		packer.install()
-	end
-end,
+    if bootstrap then
+      vim.api.nvim_create_autocmd('User', {
+        group = vim.api.nvim_create_augroup('packer', { clear = true }),
+        pattern = 'PackerComplete',
+        desc = 'Load plugins and configuration after installation',
+        callback = function()
+          vim.ui.select(
+            { 'Yes', 'No' },
+            { prompt = "Installed plugins won't be configured until nvim is restarted. Exit?" },
+            function(choice)
+              if choice == 'Yes' then
+                vim.cmd.quitall()
+              end
+            end
+          )
+        end,
+        once = true,
+      })
+      packer.install()
+    end
+  end,
 })
