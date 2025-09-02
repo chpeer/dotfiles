@@ -1,4 +1,4 @@
-local ok, lspconfig = pcall(require, 'lspconfig')
+local ok = pcall(require, 'lspconfig')
 if not ok then
   return
 end
@@ -56,10 +56,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.lsp.enable({
-  'pylsp',
   'gopls',
   'lua_ls',
   'please',
+  'basedpyright',
 })
 
 
@@ -111,33 +111,33 @@ vim.lsp.config.lua_ls = {
   },
 }
 
-vim.lsp.config.pylsp = {
+vim.lsp.basedpyright = {
   settings = {
-    pylsp = {
-      plugins = {
-        autopep8 = { enabled = false },
-        flake8 = { enabled = true },
-        mccabe = { enabled = false },
-        pycodestyle = { enabled = false },
-        pyflakes = { enabled = false },
-        yapf = { enabled = false },
-        jedi_completion = { enabled = true },
+    basedpyright = {
+      analysis = {
+        typeCheckingMode = 'basic',
       },
     },
   },
-  on_new_config = function(config, root_dir)
-    local plzconfig_dir = util.root_pattern('.plzconfig')(root_dir)
-    if not plzconfig_dir then
+    ---@diagnostic disable-next-line: unused-local
+  before_init = function(params, config)
+    if not config.root_dir then
       return
     end
-    config.settings.pylsp.plugins.jedi = {
-      extra_paths = {
-        plzconfig_dir,
-        vim.fs.joinpath(plzconfig_dir, 'plz-out/gen'),
-      },
-    }
+    if vim.uv.fs_stat(vim.fs.joinpath(config.root_dir, '.plzconfig')) then
+      ---@diagnostic disable-next-line: param-type-mismatch
+      config.settings.basedpyright = vim.tbl_deep_extend('force', config.settings.basedpyright, {
+        analysis = {
+          extraPaths = {
+            vim.fs.joinpath(config.root_dir, 'plz-out/python/venv'),
+          },
+          exclude = { 'plz-out' },
+        },
+      })
+    end
   end,
 }
+
 
 vim.lsp.config('*', {
   capabilities = cmp_nvim_lsp.default_capabilities(),
