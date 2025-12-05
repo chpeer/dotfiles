@@ -25,6 +25,10 @@ packer.startup({
 			'pappasam/papercolor-theme-slim',
 			config = function()
 				vim.cmd('colorscheme PaperColorSlim')
+        -- ensure cursor highlights predictibly
+        vim.cmd('set guicursor=n-v-sm:block-Cursor,i-ci-c-ve:ver25-Cursor,r-cr-o:hor20-Cursor')
+        -- recommended if using Neovim 0.11+
+        vim.cmd('set winborder=rounded')
 			end
 		})
 
