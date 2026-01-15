@@ -51,7 +51,7 @@ ZSH_CUSTOM="/home/christian/dev/dotfiles/oh-my-zsh-custom"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle zsh-autosuggestions)
+plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle)
 
 ZSH_TMUX_AUTOSTART=true
 
@@ -128,10 +128,7 @@ source ~/.profile_tm
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Pyenv 
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
 
-/usr/local/bin/forti-auth-check.sh
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

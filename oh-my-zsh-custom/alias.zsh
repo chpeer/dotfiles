@@ -1,16 +1,17 @@
 alias minikube-start='minikube start; ~/dev/core/vault/k8s/minkube-ecr-login.sh;'
 alias pb='plz build'
-alias pt='plz test' 
+alias pt='plz test'
 alias pw='plz watch'
 alias aws-login='$(aws ecr get-login)'
 alias k=kubectl
 alias kcontext='kubectl config use-context'
 alias vim=nvim
 alias core3='cd ~/dev/core3/src'
+alias alt='cd ~/dev/core3_alt/src'
 alias dotfiles='cd ~/dev/dotfiles'
 alias merge='gco master && git pull && gco - && git merge'
 
-# substitute for arc to set parent revision on diff 
+# substitute for arc to set parent revision on diff
 function arc() {
   if [ "$1" = "diff" ]; then
     /usr/local/bin/arc diff "${@:2}" && plz --repo_root /home/christian/dev/core3/src run //experimental/mcaisey/phabricator/set_parent_revision
