@@ -70,13 +70,6 @@ packer.startup({
       end,
     })
 		use({ 'mbbill/undotree' })
-    use({
-      "olimorris/codecompanion.nvim",
-      requires = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-      },
-    })
 		use({ 'tpope/vim-fugitive' })
 		use({ 'christoomey/vim-tmux-navigator'})
 		use({ 'windwp/nvim-autopairs' })

@@ -53,6 +53,8 @@ ZSH_CUSTOM="/home/christian/dev/dotfiles/oh-my-zsh-custom"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(vi-mode tmux git docker python kubectl please timer microk8s mettle)
 
+# Avoid oh-my-zsh tmux plugin overwriting terminal settings, use ~/.tmux.conf directly
+ZSH_TMUX_FIXTERM=false
 ZSH_TMUX_AUTOSTART=true
 
 alias vi=nvim
@@ -132,3 +134,23 @@ source ~/.profile_tm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Load pyenv automatically by appending
+# the following to
+# ~/.bash_profile if it exists, otherwise ~/.profile (for login shells)
+# and ~/.bashrc (for interactive shells) :
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
+
+# Restart your shell for the changes to take effect.
+
+# Load pyenv-virtualenv automatically by adding
+# the following to ~/.bashrc:
+
+eval "$(pyenv virtualenv-init -)"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/christian/.local/bin:$PATH"

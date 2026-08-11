@@ -8,6 +8,7 @@ alias kcontext='kubectl config use-context'
 alias vim=nvim
 alias core3='cd ~/dev/core3/src'
 alias alt='cd ~/dev/core3_alt/src'
+alias alt1='cd ~/dev/core3_alt_1/src'
 alias dotfiles='cd ~/dev/dotfiles'
 alias merge='gco master && git pull && gco - && git merge'
 
