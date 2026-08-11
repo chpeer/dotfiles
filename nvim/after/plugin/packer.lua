@@ -28,7 +28,7 @@ packer.startup({
         -- ensure cursor highlights predictibly
         vim.cmd('set guicursor=n-v-sm:block-Cursor,i-ci-c-ve:ver25-Cursor,r-cr-o:hor20-Cursor')
         -- recommended if using Neovim 0.11+
-        vim.cmd('set winborder=rounded')
+        vim.opt.winborder = 'rounded'
 			end
 		})
 
@@ -108,7 +108,7 @@ packer.startup({
       end
     })
 
-    if bootstrap then
+    if packer_bootstrap then
       vim.api.nvim_create_autocmd('User', {
         group = vim.api.nvim_create_augroup('packer', { clear = true }),
         pattern = 'PackerComplete',

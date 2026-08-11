@@ -45,7 +45,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client and client.server_capabilities.codeLensProvider then
       vim.api.nvim_create_autocmd({ 'BufEnter', 'InsertLeave', 'BufWritePost', 'CursorHold' }, {
-        callback = vim.lsp.codelens.refresh,
+        callback = function()
+          vim.lsp.codelens.refresh({ bufnr = args.buf })
+        end,
         group = augroup,
         buffer = args.buf,
         desc = 'Refresh codelenses automatically in this buffer',
@@ -111,7 +113,7 @@ vim.lsp.config.lua_ls = {
   },
 }
 
-vim.lsp.basedpyright = {
+vim.lsp.config.basedpyright = {
   settings = {
     basedpyright = {
       analysis = {
@@ -143,13 +145,13 @@ vim.lsp.config('*', {
   capabilities = cmp_nvim_lsp.default_capabilities(),
 })
 
-vim.lsp.set_log_level(vim.log.levels.OFF)
+vim.lsp.log.set_level(vim.log.levels.OFF)
 
 vim.keymap.set("n", "K", vim.lsp.buf.hover)
 vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol)
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
+vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename)
-vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help )
-vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
-vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action)
+vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help)
+
 

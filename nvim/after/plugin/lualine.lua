@@ -31,7 +31,7 @@ local cwd = {
 local lsp_clients = function()
   local client_names = vim.tbl_map(function(client)
     return client.name
-  end, vim.lsp.get_active_clients({ bufnr = 0 }))
+  end, vim.lsp.get_clients({ bufnr = 0 }))
   return #client_names > 0 and table.concat(client_names, ', ') or 'No Active LSP Clients'
 end
 

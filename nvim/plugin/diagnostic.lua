@@ -13,32 +13,37 @@ vim.diagnostic.config({
   virtual_text = virtual_text_float_config,
   source = true,
   severity_sort = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
 })
-
-vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticError' })
-vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticWarn' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticInfo' })
-vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticHint' })
 
 vim.keymap.set('n', 'dK', vim.diagnostic.open_float)
 vim.keymap.set('n', ']d', function()
-  vim.diagnostic.goto_next({ wrap = false })
+  vim.diagnostic.goto_next({ wrap = true })
 end)
 vim.keymap.set('n', '[d', function()
-  vim.diagnostic.goto_prev({ wrap = false })
+  vim.diagnostic.goto_prev({ wrap = true })
 end)
 vim.keymap.set('n', '<leader>dd', function()
-  if vim.diagnostic.is_disabled() then
-    vim.diagnostic.enable()
+  local enabled = not vim.diagnostic.is_enabled()
+  vim.diagnostic.enable(enabled)
+  if enabled then
     print('Enabled diagnostics')
   else
-    vim.diagnostic.disable()
     print('Disabled diagnostics')
   end
 end)
 vim.keymap.set('n', ']e', function()
-  vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, wrap = false })
+  vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true })
 end)
 vim.keymap.set('n', '[e', function()
-  vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN }, wrap = false })
+  vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true })
 end)
+
+

@@ -291,7 +291,7 @@ vim.keymap.set('n', '<leader>pr', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>ds', builtin.lsp_document_symbols)
 vim.keymap.set('n', 'gi', builtin.lsp_implementations)
 vim.keymap.set('n', 'gd', builtin.lsp_definitions)
-vim.keymap.set('n', 'gi', builtin.lsp_implementations)
 vim.keymap.set('n', 'gr', function()
   builtin.lsp_references({ jump_type = 'never', include_current_line = true })
 end)
+

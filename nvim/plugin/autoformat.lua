@@ -1,3 +1,5 @@
+local augroup = vim.api.nvim_create_augroup('autoformat', { clear = true })
+
 vim.api.nvim_create_autocmd('BufWritePre', {
   callback = function()
     local file_extension = vim.fn.expand('%:e')
@@ -8,3 +10,4 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   group = augroup,
   desc = 'Trim trailing whitespace',
 })
+
