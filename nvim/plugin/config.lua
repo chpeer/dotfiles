@@ -1,3 +1,6 @@
+-- Suppress third-party plugin deprecation warnings
+vim.deprecate = function() end
+
 vim.o.cursorline = true
 vim.o.number = true
 vim.o.relativenumber = true
