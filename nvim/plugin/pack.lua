@@ -61,6 +61,7 @@ vim.pack.add({
   gh('numToStr/Comment.nvim'),
   gh('gbprod/cutlass.nvim'),
   gh('olimorris/codecompanion.nvim'),
+  gh('kevalin/mermaid.nvim'),
 
   -- Debugging & Build
   gh('mfussenegger/nvim-dap'),

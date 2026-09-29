@@ -6,7 +6,7 @@ end
 ---@diagnostic disable-next-line: missing-fields
 configs.setup({
   -- A list of parser names, or "all" (the four listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "query", "go", "sql" },
+  ensure_installed = { "c", "lua", "vim", "query", "go", "sql", "mermaid" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
