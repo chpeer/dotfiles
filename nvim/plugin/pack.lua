@@ -62,6 +62,7 @@ vim.pack.add({
   gh('gbprod/cutlass.nvim'),
   gh('olimorris/codecompanion.nvim'),
   gh('kevalin/mermaid.nvim'),
+  gh('MeanderingProgrammer/render-markdown.nvim'),
 
   -- Debugging & Build
   gh('mfussenegger/nvim-dap'),
