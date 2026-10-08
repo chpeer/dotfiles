@@ -1,17 +1,15 @@
-local ok, dap = pcall(require, 'dap')
-if not ok then
-  return
+local dap = require('dap')
+local dapui = require('dapui')
+
+dap.listeners.after.event_initialized['dapui_config'] = function()
+  dapui.open()
 end
-
-local ok, dapui = pcall(require, 'dapui')
-if not ok then
-  return
+dap.listeners.before.event_terminated['dapui_config'] = function()
+  dapui.close()
 end
-
-
-dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-dap.listeners.before.event_exited['dapui_config'] = dapui.close
+dap.listeners.before.event_exited['dapui_config'] = function()
+  dapui.close()
+end
 
 dapui.setup({
   icons = { expanded = '▾', collapsed = '▸' },

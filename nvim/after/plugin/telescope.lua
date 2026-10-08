@@ -1,7 +1,4 @@
-local ok, telescope = pcall(require, 'telescope')
-if not ok then
-  return
-end
+local telescope = require('telescope')
 
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
@@ -15,24 +12,54 @@ local custom_actions = transform_mod({
   end,
 })
 
---- Shortens the given path by either:
---- - making it relative if it's part of the cwd
---- - replacing the home directory with ~ if not
+--- Shortens the given path by making it relative to the cwd, or replacing the home directory with ~ if not
 ---@param path string
 ---@return string
 local function shorten_path(path)
-  local cwd = vim.fn.getcwd()
-  if path == cwd then
+  if path == vim.fn.getcwd() then
     return ''
   end
-  -- need to escape - since its a special character in lua patterns
-  cwd = cwd:gsub('%-', '%%-')
-  local relative_path, replacements = path:gsub('^' .. cwd .. '/', '')
-  if replacements == 1 then
-    return relative_path
+  return vim.fn.fnamemodify(path, ':~:.')
+end
+
+--- Builds an entry_maker which displays the given columns, each produced by `columns(entry)`.
+---@param columns fun(entry: table): table[]
+---@param ordinal fun(entry: table): string
+---@return fun(entry: table): table
+local function location_entry_maker(columns, ordinal)
+  local displayer = entry_display.create({
+    separator = ' ',
+    items = { { remaining = true }, { remaining = true }, { remaining = true } },
+  })
+  return function(entry)
+    return {
+      valid = true,
+      value = entry,
+      ordinal = ordinal(entry),
+      display = function()
+        return displayer(columns(entry))
+      end,
+      bufnr = entry.bufnr,
+      filename = entry.filename,
+      lnum = entry.lnum,
+      col = entry.col,
+      text = entry.text,
+      start = entry.start,
+      finish = entry.finish,
+    }
   end
-  local path_without_home = path:gsub('^' .. os.getenv('HOME'), '~')
-  return path_without_home
+end
+
+local function file_line_dir(entry)
+  return {
+    vim.fs.basename(entry.filename),
+    { entry.lnum .. ':' .. entry.col, 'TelescopeResultsLineNr' },
+    { shorten_path(vim.fs.dirname(entry.filename)), 'TelescopeResultsLineNr' },
+  }
+end
+
+local function file_and_text(entry)
+  return entry.filename .. entry.text
 end
 
 telescope.setup({
@@ -164,107 +191,18 @@ telescope.setup({
           end,
         },
         lsp_references = {
-          entry_maker = function(entry)
-            local displayer = entry_display.create({
-              separator = ' ',
-              items = {
-                { remaining = true }, -- filename
-                { remaining = true }, -- line:col
-                { remaining = true }, -- directory
-              },
-            })
-
-            local make_display = function(entry)
-              return displayer({
-                vim.fs.basename(entry.filename),
-                { entry.lnum .. ':' .. entry.col, 'TelescopeResultsLineNr' },
-                { shorten_path(vim.fs.dirname(entry.filename)), 'TelescopeResultsLineNr' },
-              })
-            end
-
-            return {
-              valid = true,
-              value = entry,
-              ordinal = entry.filename .. entry.text,
-              display = make_display,
-              bufnr = entry.bufnr,
-              filename = entry.filename,
-              lnum = entry.lnum,
-              col = entry.col,
-              text = entry.text,
-              start = entry.start,
-              finish = entry.finish,
-            }
-          end,
+          entry_maker = location_entry_maker(file_line_dir, file_and_text),
         },
         lsp_implementations = {
-          entry_maker = function(entry)
-            local displayer = entry_display.create({
-              separator = ' ',
-              items = {
-                { remaining = true }, -- filename
-                { remaining = true }, -- line:col
-                { remaining = true }, -- directory
-              },
-            })
-
-            local make_display = function(entry)
-              return displayer({
-                vim.fs.basename(entry.filename),
-                { entry.lnum .. ':' .. entry.col, 'TelescopeResultsLineNr' },
-                { shorten_path(vim.fs.dirname(entry.filename)), 'TelescopeResultsLineNr' },
-              })
-            end
-
-            return {
-              valid = true,
-              value = entry,
-              ordinal = entry.filename .. entry.text,
-              display = make_display,
-              bufnr = entry.bufnr,
-              filename = entry.filename,
-              lnum = entry.lnum,
-              col = entry.col,
-              text = entry.text,
-              start = entry.start,
-              finish = entry.finish,
-            }
-          end,
+          entry_maker = location_entry_maker(file_line_dir, file_and_text),
         },
         lsp_definitions = {
-          entry_maker = function(entry)
-            local displayer = entry_display.create({
-              separator = ' ',
-              items = {
-                { remaining = true }, -- filename
-                { remaining = true }, -- directory
-              },
-            })
-
-            local make_display = function(entry)
-              local head = vim.fs.dirname(entry.filename)
-              local tail = vim.fs.basename(entry.filename)
-              head = shorten_path(head)
-              return displayer({
-                tail,
-                { head, 'TelescopeResultsLineNr' },
-              })
-            end
-
+          entry_maker = location_entry_maker(function(entry)
             return {
-              valid = true,
-              value = entry,
-              ordinal = entry.filename .. entry.text,
-              display = make_display,
-              bufnr = entry.bufnr,
-              filename = entry.filename,
-              lnum = entry.lnum,
-              col = entry.col,
-              text = entry.text,
-              start = entry.start,
-              finish = entry.finish,
+              vim.fs.basename(entry.filename),
+              { shorten_path(vim.fs.dirname(entry.filename)), 'TelescopeResultsLineNr' },
             }
-          end,
+          end, file_and_text),
         },
       }
 })
@@ -279,9 +217,7 @@ vim.keymap.set('n', '<C-p>', builtin.git_files, {})
 -- search for string across files
 vim.keymap.set('n', '<leader>ps', builtin.live_grep, {})
 -- search for string in file with current focus
-vim.keymap.set('n', '<leader>psf', function()
-  builtin.live_grep({search_dirs={vim.fn.expand("%:p")}})
-end)
+vim.keymap.set('n', '<leader>psf', builtin.current_buffer_fuzzy_find)
 -- search for string in a files open in buffer
 vim.keymap.set('n', '<leader>psb', function()
   builtin.live_grep({grep_open_files=true})
@@ -289,6 +225,10 @@ end)
 -- old files
 vim.keymap.set('n', '<leader>pr', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>ds', builtin.lsp_document_symbols)
+vim.keymap.set('n', '<leader>ph', builtin.help_tags)
+vim.keymap.set('n', '<leader>pd', builtin.diagnostics)
+vim.keymap.set('n', '<leader>pk', builtin.keymaps)
+vim.keymap.set('n', '<leader>p.', builtin.resume)
 vim.keymap.set('n', 'gi', builtin.lsp_implementations)
 vim.keymap.set('n', 'gd', builtin.lsp_definitions)
 vim.keymap.set('n', 'gr', function()

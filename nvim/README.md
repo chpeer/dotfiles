@@ -8,9 +8,13 @@ ln -s $HOME/dev/dotfiles/nvim $HOME/.config/nvim
 ```
 
 Software requirements:
-* Language servers as required
+* Neovim 0.12+
+* Language servers as required (installed via Mason)
 * fzf
 * ripgrep (rg)
+* `tree-sitter` CLI and a C compiler (nvim-treesitter parsers)
+* `make` (telescope-fzf-native, LuaSnip jsregexp)
+* `dlv` (delve) for Go debugging with nvim-dap-go
 
 Installing LSPs:
 

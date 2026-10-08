@@ -1,73 +1,67 @@
-local ok, cmp = pcall(require,'cmp')
-if not ok then
-  return
-end
+local cmp = require('cmp')
+local luasnip = require('luasnip')
+
+require('luasnip.loaders.from_vscode').lazy_load()
 
 cmp.setup({
-	-- the sources to use for autocompletion
   sources = {
-	  { name = 'nvim_lsp' },
-	  { name = 'nvim_lua' },
-	  { name = 'buffer' },
-	  { name = 'luasnip' },
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lua' },
+    { name = 'luasnip' },
+    { name = 'path' },
+    { name = 'buffer' },
   },
-    snippet = {
-      expand = function(args)
-        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-      end,
-    },
-  -- update the default sorting order so results don't magically jump around when the autocompletion window is open
-  sorting = {
-	  comparators = {
-		  cmp.config.compare.sort_text,
-		  cmp.config.compare.score,
-	  },
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
   },
   mapping = {
-	  ['<c-space>'] = cmp.mapping.complete(),
-	  ['<cr>'] = cmp.mapping.confirm({ select = true }),
-      ['<c-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<c-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<tab>'] = function(fallback)
-        if cmp.visible() then
-          cmp.abort()
-        else
-          fallback()
-        end
-      end,
-      ['<c-n>'] = function()
-        if cmp.visible() then
-          cmp.select_next_item()
-        end
-      end,
-      ['<c-p>'] = function()
-        if cmp.visible() then
-          cmp.select_prev_item()
-        end
-      end,
+    ['<c-space>'] = cmp.mapping.complete(),
+    -- only confirm an item that has been explicitly selected
+    ['<cr>'] = cmp.mapping.confirm({ select = false }),
+    ['<c-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<c-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<c-n>'] = cmp.mapping.select_next_item(),
+    ['<c-p>'] = cmp.mapping.select_prev_item(),
+    ['<tab>'] = cmp.mapping(function(fallback)
+      if luasnip.locally_jumpable(1) then
+        luasnip.jump(1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<s-tab>'] = cmp.mapping(function(fallback)
+      if luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<c-e>'] = cmp.mapping.abort(),
   },
-    confirmation = {
-      default_behavior = cmp.ConfirmBehavior.Replace,
-    },
+  confirmation = {
+    default_behavior = cmp.ConfirmBehavior.Replace,
+  },
 })
-      
+
 cmp.setup.cmdline('/', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = 'buffer' }
-        }
-      })
-      -- `:` cmdline setup.
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' }
-        }, {
-          {
-            name = 'cmdline',
-            option = {
-              ignore_cmds = { 'Man', '!' }
-            }
-          }
-        })
-      })
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' },
+  },
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    {
+      name = 'cmdline',
+      option = {
+        ignore_cmds = { 'Man', '!' },
+      },
+    },
+  }),
+})

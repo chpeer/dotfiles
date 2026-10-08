@@ -42,25 +42,24 @@ vim.pack.add({
   gh('neovim/nvim-lspconfig'),
   gh('williamboman/mason.nvim'),
   gh('williamboman/mason-lspconfig.nvim'),
-  gh('ray-x/lsp_signature.nvim'),
   gh('hrsh7th/nvim-cmp'),
   gh('hrsh7th/cmp-nvim-lua'),
   gh('hrsh7th/cmp-nvim-lsp'),
   gh('hrsh7th/cmp-buffer'),
+  gh('hrsh7th/cmp-path'),
   gh('hrsh7th/cmp-cmdline'),
   gh('saadparwaiz1/cmp_luasnip'),
   { src = gh('L3MON4D3/LuaSnip'), version = vim.version.range('2.0') },
+  gh('rafamadriz/friendly-snippets'),
 
   -- Treesitter
-  gh('nvim-treesitter/nvim-treesitter'),
+  { src = gh('nvim-treesitter/nvim-treesitter'), version = 'main' },
 
   -- Editing & Utilities
   gh('tpope/vim-fugitive'),
   gh('akinsho/git-conflict.nvim'),
+  gh('lewis6991/gitsigns.nvim'),
   gh('windwp/nvim-autopairs'),
-  gh('numToStr/Comment.nvim'),
-  gh('gbprod/cutlass.nvim'),
-  gh('olimorris/codecompanion.nvim'),
   gh('kevalin/mermaid.nvim'),
   gh('MeanderingProgrammer/render-markdown.nvim'),
 
@@ -69,13 +68,6 @@ vim.pack.add({
   gh('rcarriga/nvim-dap-ui'),
   gh('nvim-neotest/nvim-nio'),
   gh('theHamsta/nvim-dap-virtual-text'),
+  gh('leoluz/nvim-dap-go'),
   gh('marcuscaisey/please.nvim'),
 })
-
--- Colorscheme configuration
-vim.cmd('colorscheme PaperColorSlim')
-vim.cmd('set guicursor=n-v-sm:block-Cursor,i-ci-c-ve:ver25-Cursor,r-cr-o:hor20-Cursor')
-vim.opt.winborder = 'rounded'
-
--- Inline plugin setup
-require('cutlass').setup({})

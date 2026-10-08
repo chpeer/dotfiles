@@ -25,10 +25,10 @@ vim.diagnostic.config({
 
 vim.keymap.set('n', 'dK', vim.diagnostic.open_float)
 vim.keymap.set('n', ']d', function()
-  vim.diagnostic.goto_next({ wrap = true })
+  vim.diagnostic.jump({ count = 1, float = true })
 end)
 vim.keymap.set('n', '[d', function()
-  vim.diagnostic.goto_prev({ wrap = true })
+  vim.diagnostic.jump({ count = -1, float = true })
 end)
 vim.keymap.set('n', '<leader>dd', function()
   local enabled = not vim.diagnostic.is_enabled()
@@ -39,11 +39,10 @@ vim.keymap.set('n', '<leader>dd', function()
     print('Disabled diagnostics')
   end
 end)
+local warn_and_above = { min = vim.diagnostic.severity.WARN }
 vim.keymap.set('n', ']e', function()
-  vim.diagnostic.goto_next({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true })
+  vim.diagnostic.jump({ count = 1, severity = warn_and_above, float = true })
 end)
 vim.keymap.set('n', '[e', function()
-  vim.diagnostic.goto_prev({ severity = { min = vim.diagnostic.severity.WARN }, wrap = true })
+  vim.diagnostic.jump({ count = -1, severity = warn_and_above, float = true })
 end)
-
-

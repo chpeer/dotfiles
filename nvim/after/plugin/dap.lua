@@ -1,7 +1,6 @@
-local ok, dap = pcall(require, 'dap')
-if not ok then
-  return
-end
+local dap = require('dap')
+
+require('dap-go').setup()
 
 local entity = require('dap.entity')
 local repl = require('dap.repl')

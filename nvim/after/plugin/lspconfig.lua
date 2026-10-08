@@ -1,65 +1,48 @@
-local ok = pcall(require, 'lspconfig')
-if not ok then
-  return
-end
-
-local ok, mason = pcall(require, 'mason')
-if not ok then
-  return
-end
-
-local ok, mason_lspconfig = pcall(require,'mason-lspconfig')
-if not ok then
-  return
-end
-
-local ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-if not ok then
-  return
-end
-
-local util = require('lspconfig.util')
-local configs = require('lspconfig.configs')
+local mason = require('mason')
+local mason_lspconfig = require('mason-lspconfig')
+local cmp_nvim_lsp = require('cmp_nvim_lsp')
 
 mason.setup()
 mason_lspconfig.setup({
-  automatic_installation = true,
+  ensure_installed = { 'gopls', 'lua_ls', 'basedpyright' },
+  -- servers are enabled explicitly below
+  automatic_enable = false,
 })
 
-util.default_config = vim.tbl_deep_extend('force', util.default_config, {
-  capabilities = cmp_nvim_lsp.default_capabilities(),
+vim.lsp.config('please', {
+  cmd = { 'plz', 'tool', 'lps' },
+  filetypes = { 'please' },
+  root_markers = { '.plzconfig' },
 })
 
-configs.please = {
-  default_config = {
-    cmd = { 'plz', 'tool', 'lps' },
-    filetypes = { 'please' },
-    root_dir = util.root_pattern('.plzconfig'),
-  },
-}
-
--- codelense autocmd
 local augroup = vim.api.nvim_create_augroup('lspconfig_config', { clear = true })
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client and client.server_capabilities.codeLensProvider then
+    if client and client:supports_method('textDocument/codeLens') then
       vim.lsp.codelens.enable(true, { bufnr = args.buf })
     end
+    -- Neovim sets this to the LSP formatexpr, which breaks formatting with gq.
+    vim.bo[args.buf].formatexpr = ''
+
+    local function map(mode, lhs, rhs)
+      vim.keymap.set(mode, lhs, rhs, { buffer = args.buf })
+    end
+    map('n', 'K', vim.lsp.buf.hover)
+    map('n', '<leader>vws', vim.lsp.buf.workspace_symbol)
+    map({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action)
+    map('n', '<leader>cr', vim.lsp.buf.rename)
+    map('i', '<C-h>', vim.lsp.buf.signature_help)
   end,
   group = augroup,
 })
 
-vim.lsp.enable({
-  'gopls',
-  'lua_ls',
-  'please',
-  'basedpyright',
+vim.lsp.config('*', {
+  capabilities = cmp_nvim_lsp.default_capabilities(),
 })
 
-
 -- setup Go language server
-vim.lsp.config.gopls = {
+vim.lsp.config('gopls', {
   settings = {
     gopls = {
       directoryFilters = { '-plz-out' },
@@ -75,15 +58,11 @@ vim.lsp.config.gopls = {
       staticcheck = true,
     }
   }
-}
+})
 
 
 -- setup LUA language server
-vim.lsp.config.lua_ls = {
-  on_attach = function(_, bufnr)
-    -- This gets set automatically by nvim which breaks formatting with gq.
-    vim.bo[bufnr].formatexpr = ''
-  end,
+vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
       runtime = {
@@ -92,7 +71,7 @@ vim.lsp.config.lua_ls = {
       },
       workspace = {
         -- Make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
+        library = { vim.env.VIMRUNTIME },
         checkThirdParty = false,
       },
       telemetry = {
@@ -104,9 +83,9 @@ vim.lsp.config.lua_ls = {
       },
     },
   },
-}
+})
 
-vim.lsp.config.basedpyright = {
+vim.lsp.config('basedpyright', {
   settings = {
     basedpyright = {
       analysis = {
@@ -114,7 +93,7 @@ vim.lsp.config.basedpyright = {
       },
     },
   },
-    ---@diagnostic disable-next-line: unused-local
+  ---@diagnostic disable-next-line: unused-local
   before_init = function(params, config)
     if not config.root_dir then
       return
@@ -131,20 +110,13 @@ vim.lsp.config.basedpyright = {
       })
     end
   end,
-}
-
-
-vim.lsp.config('*', {
-  capabilities = cmp_nvim_lsp.default_capabilities(),
 })
 
-vim.lsp.log.set_level(vim.log.levels.OFF)
+vim.lsp.log.set_level(vim.log.levels.WARN)
 
-vim.keymap.set("n", "K", vim.lsp.buf.hover)
-vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol)
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
-vim.keymap.set("v", "<leader>ca", vim.lsp.buf.code_action)
-vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename)
-vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help)
-
-
+vim.lsp.enable({
+  'gopls',
+  'lua_ls',
+  'please',
+  'basedpyright',
+})

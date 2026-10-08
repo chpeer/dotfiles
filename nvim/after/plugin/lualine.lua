@@ -1,38 +1,14 @@
-local ok, lualine = pcall(require, 'lualine')
-if not ok then
-  return
-end
+local lualine = require('lualine')
 
-local search_results = {
-  function()
-    local search_term = vim.fn.getreg('/')
-    local search_count = vim.fn.searchcount({
-      recompute = 1,
-      maxcount = -1,
-    })
-    return string.format('/%s [%d/%d]', search_term, search_count.current, search_count.total)
-  end,
-  cond = function()
-    local search_count = vim.fn.searchcount({
-      recompute = 1,
-      maxcount = -1,
-    })
-    return search_count.total > 0
-  end,
-}
-
-local cwd = {
-  function()
-    return vim.fn.getcwd():gsub('^' .. os.getenv('HOME'), '~')
-  end,
-  color = 'LualineCwd',
-}
-
-local lsp_clients = function()
-  local client_names = vim.tbl_map(function(client)
-    return client.name
-  end, vim.lsp.get_clients({ bufnr = 0 }))
-  return #client_names > 0 and table.concat(client_names, ', ') or 'No Active LSP Clients'
+local function search_count()
+  if vim.v.hlsearch == 0 then
+    return ''
+  end
+  local count = vim.fn.searchcount({ recompute = 1, maxcount = -1 })
+  if count.total == 0 then
+    return ''
+  end
+  return string.format('/%s [%d/%d]', vim.fn.getreg('/'), count.current, count.total)
 end
 
 lualine.setup({
@@ -40,12 +16,6 @@ lualine.setup({
     theme = 'papercolor_dark',
     component_separators = { left = '', right = '' },
     section_separators = { left = '', right = '' },
-    disabled_filetypes = {
-      statusline = {},
-      winbar = {},
-      quickfix = {},
-    },
-    globalstatus = false ,
   },
   sections = {
     lualine_a = { 'mode' },
@@ -64,11 +34,9 @@ lualine.setup({
         'filename',
         path = 1,
       },
---      cwd,
     },
-    lualine_x = { search_results },
+    lualine_x = { search_count },
     lualine_y = {
---      { lsp_clients, component_separators = { right = '' } },
       {
         'diagnostics',
         symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },

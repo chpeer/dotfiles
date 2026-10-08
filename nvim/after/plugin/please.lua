@@ -3,22 +3,22 @@ if not ok then
   return
 end
 
-vim.keymap.set('n', '<leader>pb', please.build)
-vim.keymap.set('n', '<leader>pr', please.run)
-vim.keymap.set('n', '<leader>pt', please.test)
-vim.keymap.set('n', '<leader>pct', function()
+vim.keymap.set('n', '<leader>Pb', please.build)
+vim.keymap.set('n', '<leader>Pr', please.run)
+vim.keymap.set('n', '<leader>Pt', please.test)
+vim.keymap.set('n', '<leader>Pct', function()
   please.test({ under_cursor = true })
 end)
 
-vim.keymap.set('n', '<leader>pd', please.debug)
-vim.keymap.set('n', '<leader>pcd', function()
+vim.keymap.set('n', '<leader>Pd', please.debug)
+vim.keymap.set('n', '<leader>Pcd', function()
   please.debug({ under_cursor = true })
 end)
 
-vim.keymap.set('n', '<leader>ph', please.history)
-vim.keymap.set('n', '<leader>pch', please.clear_history)
-vim.keymap.set('n', '<leader>pp', please.set_profile)
-vim.keymap.set('n', '<leader>pm', please.maximise_popup)
-vim.keymap.set('n', '<leader>pj', please.jump_to_target)
-vim.keymap.set('n', '<leader>py', please.yank)
+vim.keymap.set('n', '<leader>Ph', please.history)
+vim.keymap.set('n', '<leader>Pch', please.clear_history)
+vim.keymap.set('n', '<leader>Pp', please.set_profile)
+vim.keymap.set('n', '<leader>Pm', please.maximise_popup)
+vim.keymap.set('n', '<leader>Pj', please.jump_to_target)
+vim.keymap.set('n', '<leader>Py', please.yank)
 

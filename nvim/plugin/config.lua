@@ -1,6 +1,3 @@
--- Suppress third-party plugin deprecation warnings
-vim.deprecate = function() end
-
 vim.o.cursorline = true
 vim.o.number = true
 vim.o.relativenumber = true
@@ -17,6 +14,13 @@ vim.o.splitbelow = true
 vim.o.splitright = true
 
 vim.o.termguicolors = true
+
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.undofile = true
+vim.o.updatetime = 250
+vim.o.inccommand = 'split'
+vim.o.completeopt = 'menu,menuone,noselect'
 
 -- do not show mode in cmd line as it is shown by lualist  plugin
 vim.o.showmode = false

@@ -1,24 +1,24 @@
-local ok, configs = pcall(require, 'nvim-treesitter.configs')
-if not ok then
-  return
-end
+local ts = require('nvim-treesitter')
 
----@diagnostic disable-next-line: missing-fields
-configs.setup({
-  -- A list of parser names, or "all" (the four listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "query", "go", "sql", "mermaid", "markdown", "markdown_inline" },
+local parsers = { 'c', 'lua', 'vim', 'query', 'go', 'sql', 'mermaid', 'markdown', 'markdown_inline' }
+ts.install(parsers)
 
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-  auto_install = true,
-
-  highlight = {
-    -- `false` will disable the whole extension
-    enable = true,
-  },
-
-  indent = { enable = true },
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function(args)
+    local lang = vim.treesitter.language.get_lang(args.match)
+    if not lang then
+      return
+    end
+    -- install missing parser on demand (async), then start highlighting
+    local function start()
+      if vim.api.nvim_buf_is_valid(args.buf) and pcall(vim.treesitter.start, args.buf, lang) then
+        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end
+    end
+    if pcall(vim.treesitter.language.add, lang) then
+      start()
+    elseif vim.tbl_contains(ts.get_available(), lang) then
+      ts.install(lang):await(start)
+    end
+  end,
 })
