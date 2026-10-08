@@ -6,3 +6,7 @@ DOTFILES_MODULES=(
   python
   docker
 )
+
+# add go installation to path
+export PATH=$PATH:/usr/local/go/bin
+export PATH="$PATH:$(go env GOPATH)/bin"
