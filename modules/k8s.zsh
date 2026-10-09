@@ -1,6 +1,11 @@
 # Kubernetes module
 plugins+=(kubectl microk8s)
 
+# Merge every kubeconfig in ~/.kube/configs
+if [[ -d ~/.kube/configs ]]; then
+  export KUBECONFIG="${(j.:.)${(@f)$(print -l ~/.kube/configs/*.yaml(N))}}"
+fi
+
 alias k=kubectl
 alias kcontext='kubectl config use-context'
 alias minikube-start='minikube start; ~/dev/core/vault/k8s/minkube-ecr-login.sh;'
