@@ -5,4 +5,5 @@ DOTFILES_MODULES=(
   k8s
   tmux
   python
+  rust
 )

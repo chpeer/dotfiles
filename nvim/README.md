@@ -12,7 +12,7 @@ Software requirements:
 * Language servers as required (installed via Mason)
 * fzf
 * ripgrep (rg)
-* `tree-sitter` CLI and a C compiler (nvim-treesitter parsers)
+* `tree-sitter` CLI and a C compiler (nvim-treesitter parsers). Install via rustup + `cargo install --locked tree-sitter-cli` (enable the `rust` zsh module), not npm
 * `make` (telescope-fzf-native, LuaSnip jsregexp)
 * `dlv` (delve) for Go debugging with nvim-dap-go
 

@@ -3,4 +3,5 @@ DOTFILES_OS="macos"
 DOTFILES_MODULES=(
   tmux
   python
+  rust
 )

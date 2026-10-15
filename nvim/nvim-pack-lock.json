@@ -33,6 +33,14 @@
       "rev": "98d9cb5c2c38532bd9bdb481067b20fea8f32e90",
       "src": "https://github.com/saadparwaiz1/cmp_luasnip"
     },
+    "codecompanion.nvim": {
+      "rev": "9a8e8602a7c72d10a827880fbb6fcd8bfa3830c7",
+      "src": "https://github.com/olimorris/codecompanion.nvim"
+    },
+    "cutlass.nvim": {
+      "rev": "d01b5c1943050fcda8edf5c89d4419c41a65890e",
+      "src": "https://github.com/gbprod/cutlass.nvim"
+    },
     "friendly-snippets": {
       "rev": "b4d01b0fdf3c9a549961c2f9ffe8dc09be166219",
       "src": "https://github.com/rafamadriz/friendly-snippets"
